@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">How it Works</h1>
+            <div class="row" style="padding-top: 1rem; padding-bottom: 1rem; padding-right:4rem;">
+                <p>
+                   This project is set up to perform a series of daily tasks in order to get, conglomerate, clean,
+                    save, and display past/present data for top performing stocks. These tasks can be split up into
+                    three basic parts. The first is getting scan data. The second is turning that data into something
+                    more complete and useful. The third is creating views and displaying them.
+                </p>
+                <br>
+                <h5>Getting Scan Data</h5>
+                <p>
+                    During market hours, scans from four different stock screeners are run at different intervals
+                    throughout the day. Multiple screeners are used as I’ve found that no individual screener gives
+                    a thorough view of what’s happening. Some screeners will miss certain stocks and different
+                    screeners also provide different quantities/versions of information. For example, screener A
+                    will only provide a ticker, the latest price, and the percentage gain for the day, while
+                    screener B will provide all of that plus share stats (market cap, shares outstanding, float,
+                    ect). However, screener A may pick up companies that screener B missed and screener C might have
+                    slightly (or wildly) different share stats than screener B. There will likely be overlapping
+                    information but with this method redundancy ensures completeness. The results will be consolidated
+                    and averaged out later. To ensure that everything that is running has the best chance of being
+                    accounted for, these scans are run at different intervals throughout the day. All results are
+                    given a timestamp and source label and piled on top of each other in a database table.
+                </p>
+                <br>
+                <h5>Creating the Final Results</h5>
+                <p>
+                    A couple hours after the market closes and all peripheral APIs have had a chance to update their
+                    current day data, the process of sorting, conglomerating, completing, and cleaning the data begins.
+                </p>
+                <br>
+                <h6>Consolidation and Filtering</h6>
+                <p>
+                    To start, tickers are consolidated into a list to eliminate repeating tickers. Data for each
+                    ticker, for each screener, and for each timestamp is combined where data from a later timestamp
+                    takes precedent over an earlier one (for time sensitive data like volume and closing price).
+                    A preliminary filter is then run on tickers that have enough information to know if they should
+                    be excluded or not. This is eliminates buyouts, reverse splits, illiquid stocks, and unwanted
+                    ticker types (see:
+                    <strong><a href="https://www.wallstreetmojo.com/ticker-symbol/#h-unique-aspects-of-ticker-symbol"
+                               target="_blank">ticker types</a></strong>).
+                    Tickers that have complete volume data will be filtered to exclude illiquidity. Tickers that
+                    have complete price quote data will be filtered to exclude price action associated with buyouts
+                    (price action is flat all day) and price action associated with a reverse split (previous close
+                    to current open shows no significant gain). The preliminary filter is run to reduce the number of
+                    requests to price quote sources as much as possible in the next step. Price quote data is then
+                    retrieved from a rotating list of APIs and used to complete information gaps for tickers with
+                    incomplete quote data. Another filter is then run to ensure that all, illiquids, buyouts,
+                    reserve splits are removed.
+                </p>
+                <br>
+                <h6>Sorting, Completing Data, and Averaging Stats</h6>
+                <p>
+                    After this the max percentage gain (max of the previous close to current high and current open
+                    to current high) for the current day is calculated. The list is sorted by max percentage gain
+                    and cutoff at the top 10 results. Next, share stats and other data are pulled from various
+                    sources and added into a list with any existing data of the same type. Once again, because
+                    data from any individual source may be incomplete, redundancy is used to ensure completeness.
+                    Each ticker receives data from four different sources. Data the requires averaging (market cap,
+                    shares outstanding, float, ect) is averaged together using a cluster weighted average method
+                    (every value is inversely weighted by its cumulative distance to every other value in the list).
+                    This is done to minimize the effects of outliers on the final number. The reasoning being that
+                    if 3 of 4 sources are returning relatively similar values while the 4th is returning something
+                    wildly different, it’s a good bet the 3 are more correct than the 4th. For example, if the float
+                    stats found for ticker XYZ are 5 million, 5.3 million, 5.4 million, and 20 million, the final
+                    average is going to be calculated at 5.38 million shares using the cluster average method.
+                </p>
+                  <br>
+                <h6>Calculating Additional Stats, Getting Current Day OHLCV Data, and Finalizing Data</h6>
+                <p>
+                    Now that all tickers in the list have complete data, additional stats can be calculated.
+                    These include pre-market activity and the close from HOD (high of day) as a percentage.
+                    After this, the 5 minute intraday OHLCV (open, high, low, close, and volume) candle data is
+                    retrieved for each ticker, which is then used to calculate to total dollar volume (average
+                    of the open and close price times the volume for each candle). Lastly, everything is finalized
+                    and inserted into the database to later be queried and displayed by the site.
+                </p>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% endblock content %}

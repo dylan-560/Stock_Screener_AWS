@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Historical Screens</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="{% url 'home' %}">Historical Screens</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Statistics</div>
+                            <a class="nav-link" href="{% url 'time_window_performance' %}">Performance by Time of Day
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'day_of_week_performance' %}">Performance by Day of Week
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'gainer_stats' %}">Gainer Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'dollar_volume_stats' %}">Dollar Volume Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'price_stats' %}">Price Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'dist_from_200_sma' %}">Distance From 200SMA
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'close_to_range_stats' %}">Close to Day Range Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'market_cap' %}">Market Cap Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'shares_outstanding' %}">Outstanding Shares Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'shares_float' %}">Shares Float Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'shares_short' %}">Shares Short Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <a class="nav-link" href="{% url 'short_perc_float' %}">Float Percent Short Stats
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-right"></i></div></a>
+
+                            <div class="sb-sidenav-menu-heading">Info</div>
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                            <a class="nav-link" href="{% url 'methodology' %}">Methodology</a>
+
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+
+                    </div>
+                </nav>
+            </div>
+            {% block content %}
+    	    {% endblock %}
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'assets/demo/chart-area-demo.js' %}"></script>
+        <script src="{% static 'assets/demo/chart-bar-demo.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+/venv/
+get_screens/environment_vars.py
+get_screens/notest.txt
+
+django_site/environment_vars.py
+django_site/Dockerfile
+django_site/docker-compose.yml

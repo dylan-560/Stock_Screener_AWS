@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Price Distance From 200 SMA</h1>
+            <h3>For {{ start_date }} to {{ end_date }} For Top {{ top_x }} Daily Results</h3>
+            <h6>In general, what was the closing price of the previous day before running compared to the 200
+                day simple moving average in percentage terms?</h6>
+            <div class="row" style="padding: 1rem 1rem;">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Lookback Period
+                  </button>
+                  <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{% url 'dist_from_200_sma' 'last_week'|slugify %}">Last Week</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dist_from_200_sma' 'last_two_weeks'|slugify %}">Last Two Weeks</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dist_from_200_sma' 'last_month'|slugify %}">Last Month</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dist_from_200_sma' 'last_three_months'|slugify %}">Last Three Months</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dist_from_200_sma' 'last_six_months'|slugify %}">Last Six Months</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dist_from_200_sma' 'last_year'|slugify %}">Last Year</a></li>
+                  </ul>
+                </div>
+                {% if date_msg != None %}
+                    <div class="row" style="padding: 1rem 1rem; color: red;">
+                        <strong>{{ date_msg }}</strong>
+                    </div>
+                {% endif %}
+            </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                Percent Distance - Cluster Average
+                            </div>
+                            <div class="card-body" id="myAreaChart" width="100%" height="40">
+                            {{ cluster_avg_chart|safe }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                Percent Distance - Average
+                            </div>
+                            <div class="card-body" id="myAreaChart" width="100%" height="40">
+                            {{ avg_chart|safe }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                Percent Distance - Median
+                            </div>
+                            <div class="card-body" id="myAreaChart" width="100%" height="40">
+                            {{ med_chart|safe }}
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    <div class="col-xl-12">-->
+<!--                        <div class="card mb-4">-->
+<!--                            <div class="card-header">-->
+<!--                                <i class="fas fa-chart-area me-1"></i>-->
+<!--                                Percent Distance - Standard Deviation-->
+<!--                            </div>-->
+<!--                            <div class="card-body" id="myAreaChart" width="100%" height="40">-->
+<!--                            {{ std_dev_chart|safe }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Top Results
+                </div>
+                <table class="table table-hover my-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Cluster Average</th>
+                            <th scope="col">Average</th>
+                            <th scope="col">Median</th>
+                            <th scope="col">Standard Deviation</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in stats %}
+                            <tr>
+                                <td>{{ t.datetime }}</td>
+                                <td>{{ t.prev_close_to_200sma_cluster_avg }}</td>
+                                <td>{{ t.prev_close_to_200sma_average }}</td>
+                                <td>{{ t.prev_close_to_200sma_median }}</td>
+                                <td>{{ t.prev_close_to_200sma_std }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% endblock content %}

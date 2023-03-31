@@ -1,0 +1,10 @@
+.git
+.gitignore
+.docker
+venv/
+.idea
+*/__pycache__
+**/__pycache__
+***/__pycache__
+*.pyc
+TODO.txt

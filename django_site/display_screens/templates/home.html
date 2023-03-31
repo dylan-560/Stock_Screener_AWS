@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Top Movers For {{ selected_date }}</h1>
+            <ol class="breadcrumb mb-4">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Date
+                  </button>
+                  <ul class="dropdown-menu">
+                      {% for date in all_dates %}
+                        <li><a class="dropdown-item" href="{% url 'home' date %}">{{ date }}</a></li>
+                      {% endfor %}
+                  </ul>
+                </div>
+            </ol>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-1"></i>
+                            {{ ticker }} 5min - {{ selected_date }}
+                        </div>
+                        <div class="card-body" id="myAreaChart" width="100%" height="40">
+                        {{ chart|safe }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            Stats
+                        </div>
+                        <div class="card-body" id="myAreaChart" width="100%" height="40">
+                            <table class="table table-hover">
+                              <tbody>
+                              {% for row in ticker_result %}
+                                     <tr>
+                                         <td>{{ row.0.0 }}: <strong>{% if row.0.1 == None %} N/A {% else %}
+                                             {{ row.0.1 }} {% endif %}</strong></td>
+                                         <td>{{ row.1.0 }}: <strong>{% if row.0.1 == None %} N/A {% else %}
+                                             {{ row.1.1 }} {% endif %}</strong></td>
+                                     </tr>
+                              {% endfor %}
+                              </tbody>
+                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Top Results
+                </div>
+                <table class="table table-hover my-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">Max Pct Gain</th>
+                            <th scope="col">Pre/Post Mkt Gain</th>
+                            <th scope="col">Market Cap</th>
+                            <th scope="col">Shares Outstanding</th>
+                            <th scope="col">Float</th>
+                            <th scope="col">Shares Short</th>
+                            <th scope="col">Short Pct Float</th>
+                            <th scope="col">Dollar Volume</th>
+                            <th scope="col">Close To Range</th>
+                            <th scope="col">Sector</th>
+                            <th scope="col">Industry</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in top_results %}
+                            <tr>
+                                <td>{{ t.symbol }}</td>
+                                <td>{{ t.max_pct_gain }}%</td>
+                                <td>{% if t.ext_market_activity == None %} N/A {% else %}
+                                    {{ t.ext_market_activity }}% {% endif %}</td>
+                                <td>{% if t.market_cap == None %} N/A {% else %}
+                                    {{ t.market_cap }}M {% endif %}</td>
+                                <td>{% if t.shares_outstanding == None %} N/A {% else %}
+                                    {{ t.shares_outstanding }}M {% endif %}</td>
+                                <td>{% if t.shares_float == None %} N/A {% else %}
+                                    {{ t.shares_float }}M {% endif %}</td>
+                                <td>{% if t.shares_short == None %} N/A {% else %}
+                                    {{ t.shares_short }}M {% endif %}</td>
+                                <td>{% if t.short_perc_float == None %} N/A {% else %}
+                                    {{ t.short_perc_float }}% {% endif %}</td>
+                                <td>{% if t.dollar_volume == None %} N/A {% else %}
+                                    {{ t.dollar_volume }}M {% endif %}</td>
+                                <td>{% if t.close_to_range == None %} N/A {% else %}
+                                    {{ t.close_to_range }}% {% endif %}</td>
+                                <td>{% if t.sector == None %} N/A {% else %}
+                                    {{ t.sector }} {% endif %}</td>
+                                <td>{% if t.industry == None %} N/A {% else %}
+                                    {{ t.industry }} {% endif %}</td>
+                                <td>
+                                    <a href="{% url 'home' t.datetime|slugify t.symbol|slugify %}"
+                                    class="btn btn-secondary btn-sm"> see ticker </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% endblock content %}

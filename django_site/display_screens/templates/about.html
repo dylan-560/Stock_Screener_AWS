@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">What is This and Why Does it Exist?</h1>
+            <div class="row" style="padding: 1rem 1rem;">
+                <p>
+                    As someone who is both interested in and trades volatility in microcap stocks, I built this
+                    project as a supplement to my work. To be profitable with any consistency you have to
+                    understand what kind of market you are in. Is the market hot or cold relative to what it was in
+                    the past? If things are hot are there any patterns in what’s running? Is there a particular theme
+                    or industry that’s getting a lot of attention right now? Is there a catalyst pushing that
+                    attention? Knowing the answers to these questions can mean the difference between a string of
+                    big winners or taking consecutive losses. The easy(ish) money is made in an active market.
+                    Unnecessary losses happen when things are slow. Think of it in terms of fishing. You can have
+                    the best bait, gear, and technique in the world but if there’s no fish you aren’t catching
+                    anything. Likewise, even with a bad strategy, it’s infinitely easier to be profitable in a
+                    market with the right conditions. The problem with this is the amount of time and energy needed
+                    to figure out if the status quo is even worth risking money for. Trends change, often quickly.
+                    If you take a week off its entirely possible you’ll come back to a market that’s unrecognizable
+                    from what it was when you left. Then you have to go through the process of getting reacquainted
+                    with the new state of affairs. This project is my attempt at mitigating that re-learning curve
+                    and to provide a better perspective once you’re caught up.
+                </p>
+                <br>
+                <p>
+                    In a nutshell, this project gets, cleans, saves, and displays historical stock screens for the
+                    top percent gainers of the day as well as various metrics relevant to the companies found in
+                    those screens. The general purpose is to gauge how active this market niche is relative to how
+                    active it’s been in the past as well as provide some insight into the characteristics of
+                    companies that are/were seeing large intraday price swings. Specifically, this alleviates the
+                    following pain points:
+                </p>
+                <br>
+                <p>
+                    First, the data isn’t easy to come by for free. Gainer screens for the current day are easy to
+                    get but scans from days/weeks ago all exist behind a paywall. This produces historical data for
+                    free.
+                </p>
+                <br>
+                <p>
+                    Second, the most extreme levels of intraday volatility are almost exclusive to seedy microcap
+                    stocks - stocks that nobody cares about until they blow up. Because of this, information for
+                    these companies can be (and usually is) scarce across mainstream sources. Details such as a
+                    stock’s float or short interest, are extremely important when assessing the quality of a
+                    potential trade. Since this site uses many different sources for screens, company stats,
+                    and price data, the results are more likely to be complete.
+                </p>
+                <br>
+                <p>
+                    Third, even if money is exchanged for historical screen data, not only is there no guarantee
+                    I’m getting the information I want, it’s also going to be a chore to extract the insights I
+                    want from it. By being in control of what’s collected and where it’s collected from, I can
+                    produce better data and create my own custom views to answer whatever questions I have.
+                </p>
+                  <br>
+                <p>
+                    Fourth, as previously mentioned, volatility is cyclical. Sometimes it’s there, sometimes
+                    it’s not. Unless you’re at the desk every day keeping tabs on things you won’t really have an
+                    accurate idea of how excited the market is from one point in time to the next. Without that
+                    reference you can’t really have any idea if now is a good time to be involved. With this you
+                    can simply look at a chart.
+                </p>
+                <br>
+                <p>
+                    If you want to know more about how it works, check out
+                    <strong><a href="{% url 'methodology' %}"> methodology</a></strong>.
+
+                </p>
+
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% endblock content %}
